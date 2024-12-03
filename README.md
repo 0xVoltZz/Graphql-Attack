@@ -1,5 +1,4 @@
 
-```markdown
 # GraphQL SQL Injection Tester Documentation
 
 ## Overview
