@@ -113,8 +113,3 @@ pip install -r requirements.txt
 - **Injection Risks**: SQL injection can have severe consequences on databases, including data loss or unauthorized access. Always use tools like this responsibly.
 - **Data Handling**: Any sensitive data accessed or injected during testing should be handled according to ethical guidelines and legal standards.
 
----
-
-## License
-This project is licensed under the **MIT License**.
-```
