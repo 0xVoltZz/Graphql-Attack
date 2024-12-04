@@ -16,13 +16,17 @@ def run_inql(target_url: str):
     try:
         print(f"[+] Running InQL on {target_url}")
 
+        try:
+            if requests.get(target_url).status_code == 404 or requests.post(target_url).status_code == 404:
+                print(Fore.RED + f"[-] Error connecting to {target_url}: check the endpoine\n[-] Status Code: {requests.get(target_url).status_code}")
+                return None 
+        except:
+            print(Fore.RED + f"[-] Error connecting to {target_url}: check The URL")
+            return None
 
-        if requests.get(target_url).status_code == 404 or requests.post(target_url).status_code == 404:
-            print(Fore.RED + f"[-] Error connecting to {target_url}: check the endpoine\n[-] Status Code: {requests.get(target_url).status_code}")
-            return None          
 
         result = subprocess.run(
-            ["./.venv/bin/python3","-m","inql", "-t", target_url, "--generate-tsv"],
+            ["./GraphqlAttack/vevnQL/bin/python3","-m","inql", "-t", target_url, "--generate-tsv"],
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
@@ -35,8 +39,8 @@ def run_inql(target_url: str):
         return output_dir
 
     except subprocess.CalledProcessError as e:
-        print(f"[-] Failed to run InQL: {e}")
-        print(f"Error Output:\n{e.stderr.decode()}")
+        print(f"[-] Failed to run InQL: Check The ")
+
         return None
 
 
@@ -103,17 +107,18 @@ def send_test_request(endpoint_file: str, graphql_url: str):
 
 
 
-HDR = Fore.BLUE +"""
+HDR = Fore.BLUE +r"""
   ____                 _           _      _   _   _             _    
  / ___|_ __ __ _ _ __ | |__   __ _| |    / \ | |_| |_ __ _  ___| | __
 | |  _| '__/ _` | '_ \| '_ \ / _` | |   / _ \| __| __/ _` |/ __| |/ /
 | |_| | | | (_| | |_) | | | | (_| | |  / ___ \ |_| || (_| | (__|   < 
- \____|_|  \__,_| .__/|_| |_|\__, |_| /_/   \_\__|\__\__,_|\___|_|\_\\
+ \____|_|  \__,_| .__/|_| |_|\__, |_| /_/   \_\__|\__\__,_|\___|_|\_\
                 |_|             |_|        
                                             by 0xVoltZz                          
-""".strip()
+"""
+print(HDR)
 if __name__ == "__main__":
-    print(HDR)
+    
     parser = argparse.ArgumentParser(description="GraphQL Tester with SQL Injection Payloads")
     parser.add_argument("-u", "--url", type=str, required=True, help="Target GraphQL URL")
     
