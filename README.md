@@ -33,7 +33,7 @@ pip install -r requirements.txt
 ```bash
    git clone https://github.com/0xVoltZz/GraphqlAttack.git
    cd GraphqlAttack
-   python AUTORUN.py
+   python attack.py
 ```
 
 #### Manual Installation
