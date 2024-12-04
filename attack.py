@@ -1,6 +1,16 @@
 import os
 import subprocess
 import sys
+import argparse
+
+# Function to handle argument parsing
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="GraphQL Attack Setup Script")
+    parser.add_argument('-u', '--url', type=str, help="URL endpoint for the attack (required)", required=False)
+    return parser.parse_args()
+
+# Parsing the command-line arguments
+args = parse_arguments()
 
 parent_dir = "GraphqlAttack"
 env_name = os.path.join(parent_dir, "vevnQL")
@@ -27,7 +37,6 @@ if not os.path.isdir(env_name):
 else:
     print(f"The virtual environment {env_name} was found.")
 
-
 # Activation of the virtual environment
 if os.name == "nt":  # Windows
     activate_script = os.path.join(env_name, "Scripts", "activate")
@@ -37,13 +46,24 @@ else:  # Linux/Unix
     python_script = os.path.join(env_name, "bin", "python3")
 if os.path.isfile(activate_script):
     print("Activating the virtual environment...")
-    # Use subprocess to activate the environment
-    subprocess.run([python_script, "-m", "pip", "install", "--upgrade","pip"])
-    subprocess.run([python_script, "-m", "pip", "install", "-r","requirements.txt"])
+    subprocess.run([python_script, "-m", "pip", "install", "--upgrade","pip"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+    subprocess.run([python_script, "-m", "pip", "install", "-r","requirements.txt"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
     print()
-    print("Run this Command:")
-    print(python_script,script_path)
-    print("exm:\n python GraphqlAttack/main.py -u http://domin.com/endpoint")
+    
+    if args.url:
+        subprocess.run([python_script, script_path,"-u", args.url])
+
+    else:
+        print("No URL provided. Example usage:")
+        print("To run the attack, you need to specify the target URL with the -u flag.")
+        print("Example URLs:")
+        print(f"python attack.py -u http://example.com/graphql")
 
 else:
     print(f"Could not find the activation script at {activate_script}")
