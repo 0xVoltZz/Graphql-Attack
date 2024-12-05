@@ -26,7 +26,7 @@ def run_inql(target_url: str):
 
 
         result = subprocess.run(
-            ["./GraphqlAttack/vevnQL/bin/python3","-m","inql", "-t", target_url, "--generate-tsv"],
+            [f"{os.getcwd()}/GraphqlAttack/vevnQL/bin/python3","-m","inql", "-t", target_url, "--generate-tsv"],
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
